@@ -23,3 +23,22 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 - La preuve sociale vit sous le bouton principal, pas dans un écran séparé.
 
 **En attente** : choix de direction par Gaia, réponses aux questions de `PAGES.md`. Ensuite : `STYLE.md` puis planches Post, Carte de fin, Séries & classement.
+
+## V2 — 2026-11-18 · Style validé, déclinaison des 4 pages
+
+**Décisions de Gaia**
+- Direction retenue : **01 Morning light**.
+- **Desktop seul** : le règlement Devpost n'exige pas le mobile (le « mobile first » venait de notre `IDEES.md`). Règle par défaut pour les planches : desktop uniquement, téléphone seulement si le hackathon le demande. Les planches V1 gardent leur cadre mobile (historique, non modifiées).
+
+**Fait**
+- `STYLE.md` : palette avec hex et rôles, échelle typo 40/19/15/13/11, grille de la zone de jeu (708 × 600, scène 1.55 fr / action 1 fr), composants, mouvement, règles d'états.
+- Planches desktop 1440 × 900, chacune dans un post de feed neutre (`planches/v2/`) :
+  - `01-post.html` — état dans le feed : balcon vide avec heures de soleil, les 6 plantes du jour, bouton « Plant today's balcony », preuve sociale.
+  - `02-jeu.html` — la planche V1-01 reprise en desktop seul, avec les libellés d'heures déplacés au-dessus de l'arc (ils chevauchaient les pastilles).
+  - `03-carte-de-fin.html` — balcon final 16/18, « more blooms than 81% », série de 6 jours sur la semaine, aperçu du commentaire, « Share in the comments », compte à rebours.
+  - `04-series-classement.html` — répartition des scores du jour (ma barre en terre cuite, médiane), meilleurs balcons (floraisons puis temps), mes séries.
+- `tools/gen-planches-v2.py` : génère les 4 planches depuis un tronc commun (style, données, dessin des pots). Les HTML restent autonomes, sans build pour les voir.
+
+**Hypothèses de démo à valider** : partage par commentaire avec un texte prérempli ; départage du classement au temps ; « avg blooms » dans les statistiques de série.
+
+**En attente** : revue des 4 planches par Gaia, puis `/lock`.
