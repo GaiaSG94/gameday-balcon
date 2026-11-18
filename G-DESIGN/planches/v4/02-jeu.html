@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Balcon — V4 · Game · isometric</title>
+<style>
+:root{
+  --bg:#faf8f5; --paper:#ffffff; --ink:#12161c; --ink2:#6b7178; --line:#e7e3da;
+  --pine:#17594c; --pine-l:#e4efeb; --terra:#c46a4a; --terra-d:#a9563a; --sun:#f2b84b;
+  --sage:#8fae96; --sage-d:#5f8a72; --rain:#8fb3c6; --soil:#5a4336;
+  --rail:#2b3138; --floor:#f1ece4; --wall:#ece6dc; --wall2:#e1d9cc; --edge1:#e4ddd1; --edge2:#d8cfc1; --joint:#e5ded2;
+  --shadow:rgba(20,40,25,.16);
+  --l1:#123a2d; --l2:#1d5641; --l3:#2f7352; --l4:#5c9a6c; --l5:#93c08c; --l6:#c4dcb6; --mist:#eaf2e2;
+  --font:"Inter","Helvetica Neue","Nimbus Sans",Arial,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:#eceae6;font-family:var(--font);color:var(--ink);font-variant-numeric:tabular-nums;position:relative}
+.nav{position:absolute;left:0;top:0;width:100%;height:56px;background:#fff;border-bottom:1px solid #e3e1dd;display:flex;align-items:center;padding:0 24px;gap:16px}
+.nav .lbl{font-size:12px;color:#9a948c;letter-spacing:.05em;text-transform:uppercase;margin-left:auto}
+.bar{background:#e5e2dd;border-radius:6px;height:10px}
+.lcol{position:absolute;left:24px;top:84px;width:220px;display:flex;flex-direction:column;gap:18px}
+.rcol{position:absolute;left:1092px;top:84px;width:316px;background:#fff;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.post{position:absolute;left:318px;top:76px;width:748px;background:#fff;border-radius:12px;padding:14px 20px 10px}
+.ph{display:flex;align-items:center;gap:8px;font-size:13px;color:#6b6b6b}
+.ph .av{width:24px;height:24px;border-radius:50%;background:var(--sage)}
+.ph b{color:#222}
+.pt{font-size:19px;font-weight:600;margin:6px 0 10px;color:#1c1c1c}
+.pa{display:flex;gap:10px;margin-top:10px}
+.pa span{font-size:12px;color:#555;background:#f0eeea;border-radius:99px;padding:7px 12px}
+.g{position:relative;background:linear-gradient(180deg,var(--mist) 0%,#d9e9cf 100%);border:1px solid #cfe0c4;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1.55fr 1fr;grid-template-rows:auto 1fr;height:600px;color:var(--ink)}
+.gh{grid-column:1/3;display:flex;align-items:center;gap:8px;padding:14px 18px 0}
+.word{font-weight:600;font-size:18px;letter-spacing:-.02em;margin-right:auto;display:flex;align-items:center;gap:8px}.word:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 3px #fbecc8}
+.pill{font-size:12px;font-weight:500;padding:4px 8px;border-radius:6px;background:var(--paper);border:1px solid var(--line);color:var(--ink2)}
+.pill.s{color:var(--pine);display:flex;align-items:center;gap:6px}.pill.s:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pine)}
+.scene{padding:4px 6px 0 10px;align-self:center}
+.scene svg{width:100%;display:block}
+.side{display:flex;flex-direction:column;gap:12px;padding:16px;margin:10px 14px 14px 0;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.8);border-radius:12px;box-shadow:0 14px 34px -20px rgba(12,48,32,.55)}
+.g>*{position:relative;z-index:1}.g>.bgleaf{position:absolute;inset:0;z-index:0;pointer-events:none}.bgleaf svg{width:100%;height:100%;display:block}
+.gh .pill{background:rgba(255,255,255,.85)}
+.score .of,.score .plus{white-space:nowrap}.side .big{font-size:40px}
+.word{background:rgba(255,255,255,.85);padding:4px 10px 4px 8px;border-radius:8px;margin-right:auto}
+h2{font-size:22px;font-weight:500;line-height:1.15;letter-spacing:-.02em}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:6px}
+.sub{font-size:13px;color:var(--ink2);margin-top:3px;line-height:1.4}
+.tray{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 8px;display:flex;align-items:center;gap:6px;position:relative}
+.card svg{width:38px;height:42px;flex:none;background:#f4f1eb;border-radius:8px;padding:2px}
+.card .n{font-size:13px;font-weight:500;letter-spacing:-.01em}
+.need{font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:4px;margin-top:1px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--sun);display:inline-block}
+.drops{display:inline-flex;gap:1px}
+.drops i{width:6px;height:8px;border-radius:50%/60% 60% 40% 40%;background:var(--rain);display:inline-block}
+.drops i.o{background:none;box-shadow:inset 0 0 0 1px #c7d6de}
+.card.placed{background:transparent;opacity:.55}
+.card.placed .n{color:var(--ink2)}
+.card.held{border:1.5px solid var(--pine);box-shadow:0 0 0 3px var(--pine-l)}
+.tag{position:absolute;top:-8px;right:8px;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--pine);color:#fff;border-radius:4px;padding:2px 6px}
+.score{display:flex;align-items:baseline;gap:6px}
+.big{font-size:44px;font-weight:500;line-height:1;letter-spacing:-.03em}
+.of{font-size:15px;color:var(--ink2)}
+.plus{margin-left:auto;font-size:12px;font-weight:500;color:var(--pine);background:var(--pine-l);border-radius:6px;padding:4px 8px}
+.meter{display:grid;grid-template-columns:repeat(18,1fr);gap:3px}
+.meter i{height:6px;border-radius:2px;background:var(--line)}
+.meter i.on{background:var(--sun)}
+.meter i.pre{background:repeating-linear-gradient(135deg,var(--sun) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--sun)}
+.cta{border:0;border-radius:8px;height:44px;font:inherit;font-size:15px;font-weight:500;background:var(--pine);color:#fff;width:100%}
+.cta[disabled]{background:#ebe8e2;color:#9aa0a6}
+.btn2{border:1px solid var(--line);background:var(--paper);border-radius:8px;height:40px;font:inherit;font-size:14px;font-weight:500;color:var(--ink);width:100%}
+.proof{font-size:12px;color:var(--ink2);text-align:center}
+.proof b{color:var(--ink)}
+.kv{font-size:13px;color:var(--ink2)}.kv b{color:var(--ink)}
+</style>
+</head>
+<body>
+<script>
+const SLOTS={T1:[0,6,2],T2:[1,7,1],T3:[2,8,1],T4:[3,5,2],F1:[0,3,3],F2:[1,2,3],F3:[2,2,2],F4:[3,4,1]};
+const PLANTS=[
+  {name:'Lavender',k:'spike',sun:8,w:1},{name:'Geranium',k:'round',sun:7,w:1},
+  {name:'Fern',k:'frond',sun:2,w:3},{name:'Mint',k:'pair',sun:4,w:3},
+  {name:'Basil',k:'broad',sun:6,w:2},{name:'Begonia',k:'heart',sun:3,w:2}];
+const slot=id=>{const [c,sun,w]=SLOTS[id];return{x:[72,158,244,330][c],base:id[0]==='T'?176:286,sun,w}};
+const bloom=(p,s)=>Math.max(0,3-Math.abs(p.sun-s.sun)-Math.abs(p.w-s.w));
+const S='var(--sage)',SD='var(--sage-d)';
+function foliage(k,x,y){
+  let o='';
+  if(k==='spike'){for(let i=-2;i<=2;i++){const h=30-Math.abs(i)*6;o+=`<line x1="${x+i*3}" y1="${y}" x2="${x+i*7}" y2="${y-h}" stroke="${SD}" stroke-width="2"/><ellipse cx="${x+i*7}" cy="${y-h-3}" rx="2.6" ry="6" fill="${S}"/>`}}
+  if(k==='round'){o=`<circle cx="${x-9}" cy="${y-10}" r="10" fill="${SD}"/><circle cx="${x+9}" cy="${y-12}" r="10" fill="${S}"/><circle cx="${x}" cy="${y-22}" r="11" fill="${S}"/>`}
+  if(k==='frond'){[-26,-12,12,26].forEach(d=>{o+=`<path d="M${x} ${y} Q${x+d*.4} ${y-26} ${x+d} ${y-30}" stroke="${d<0?SD:S}" stroke-width="4" fill="none" stroke-linecap="round"/>`})}
+  if(k==='pair'){o=`<line x1="${x}" y1="${y}" x2="${x}" y2="${y-34}" stroke="${SD}" stroke-width="2"/>`;[8,18,28].forEach((d,i)=>{o+=`<ellipse cx="${x-6}" cy="${y-d}" rx="7" ry="4" fill="${i%2?S:SD}" transform="rotate(-25 ${x-6} ${y-d})"/><ellipse cx="${x+6}" cy="${y-d}" rx="7" ry="4" fill="${i%2?SD:S}" transform="rotate(25 ${x+6} ${y-d})"/>`})}
+  if(k==='broad'){[-32,0,32].forEach((r,i)=>{o+=`<ellipse cx="${x}" cy="${y-15}" rx="9" ry="15" fill="${i===1?S:SD}" transform="rotate(${r} ${x} ${y})"/>`})}
+  if(k==='heart'){o=`<circle cx="${x-8}" cy="${y-10}" r="9" fill="${SD}"/><circle cx="${x+8}" cy="${y-10}" r="9" fill="${SD}"/><circle cx="${x}" cy="${y-20}" r="10" fill="${S}"/>`}
+  return o;
+}
+function blooms(x,y,n){
+  return [[-11,-30],[0,-38],[11,-30]].map(([dx,dy],i)=>i<n
+    ?`<circle cx="${x+dx}" cy="${y+dy}" r="4.6" fill="var(--sun)" stroke="var(--terra)" stroke-width="1.4"/>`
+    :`<circle cx="${x+dx}" cy="${y+dy}" r="4" fill="none" stroke="var(--ink2)" stroke-opacity=".35" stroke-dasharray="2 2"/>`).join('');
+}
+function pot(x,base,k,n,opts={}){
+  const t=base-24;
+  return `<g opacity="${opts.ghost?.6:1}">
+    ${opts.noShadow?'':`<ellipse cx="${x-16}" cy="${base+1}" rx="22" ry="4" fill="var(--shadow)"/>`}
+    <path d="M${x-14} ${t} L${x+14} ${t} L${x+10} ${base} L${x-10} ${base}Z" fill="var(--terra)"/>
+    <rect x="${x-17}" y="${t-5}" width="34" height="7" rx="2" fill="var(--terra-d)"/>
+    ${foliage(k,x,t-5)}${n===null?'':blooms(x,t-5,n)}</g>`;
+}
+function drops(n,x,y){let o='';for(let i=0;i<3;i++){o+=`<path d="M${x+i*8} ${y-5} q3 4 0 6 q-3 -2 0 -6z" fill="${i<n?'var(--rain)':'none'}" stroke="var(--rain)" stroke-width=".8"/>`}return o}
+/* place: {plantIndex: slotId}; held: [plantIndex, slotId]; warn: {plantIndex: text} */
+function scene(place={},held=null,warn={}){
+  const arc=t=>{const a=Math.PI*(1-t);return[200+172*Math.cos(a),150-122*Math.sin(a)]};
+  let ticks='';for(let h=7;h<=19;h++){const[x,y]=arc((h-7)/12);ticks+=`<circle cx="${x}" cy="${y}" r="${h%3===0?2.2:1.2}" fill="var(--ink2)" opacity=".5"/>`;
+    if(h===9||h===13||h===17)ticks+=`<text x="${x+(x<200?-6:x>200?6:0)}" y="${y-8}" font-size="9" text-anchor="middle" fill="var(--ink2)">${h>12?h-12+' pm':h+' am'}</text>`}
+  const[sx,sy]=arc(7/12);
+  let bars='';for(let x=28;x<=372;x+=21)bars+=`<line x1="${x}" y1="186" x2="${x}" y2="262" stroke="#d8cbbb" stroke-width="3"/>`;
+  const used=new Set([...Object.values(place),held&&held[1]]);
+  let slots='';
+  Object.keys(SLOTS).forEach(id=>{if(used.has(id))return;const s=slot(id);
+    slots+=`<rect x="${s.x-22}" y="${s.base-48}" width="44" height="46" rx="10" fill="var(--paper)" fill-opacity=".75" stroke="var(--ink2)" stroke-opacity=".35" stroke-dasharray="3 3"/>
+      <circle cx="${s.x-9}" cy="${s.base-32}" r="4" fill="var(--sun)"/><text x="${s.x-2}" y="${s.base-28}" font-size="12" font-weight="700" fill="var(--ink)">${s.sun}h</text>${drops(s.w,s.x-11,s.base-12)}`});
+  let pots='';
+  Object.entries(place).forEach(([i,id])=>{const p=PLANTS[i],s=slot(id);pots+=pot(s.x,s.base,p.k,bloom(p,s));
+    if(warn[i])pots+=`<text x="${s.x}" y="${s.base-74}" font-size="10" font-weight="700" fill="var(--terra-d)" text-anchor="middle">${warn[i]}</text>`});
+  if(held){const p=PLANTS[held[0]],s=slot(held[1]),b=bloom(p,s);
+    pots+=`<rect x="${s.x-26}" y="${s.base-70}" width="52" height="72" rx="12" fill="none" stroke="var(--terra)" stroke-width="2" stroke-dasharray="5 4"/>${pot(s.x,s.base-6,p.k,b,{ghost:1})}
+      <rect x="${s.x+8}" y="${s.base-82}" width="30" height="18" rx="9" fill="var(--terra)"/><text x="${s.x+23}" y="${s.base-69}" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">+${b}</text>`}
+  return `<svg viewBox="0 0 400 304" role="img" aria-label="Balcony with sun path">
+    <circle cx="${sx}" cy="${sy}" r="24" fill="var(--sun)" opacity=".22"/>
+    <path d="M28 150 A172 122 0 0 1 372 150" fill="none" stroke="var(--sun)" stroke-width="2.5" stroke-dasharray="1 6" stroke-linecap="round"/>
+    ${ticks}<circle cx="${sx}" cy="${sy}" r="12" fill="var(--sun)"/>
+    ${bars}<rect x="14" y="176" width="372" height="10" rx="3" fill="var(--rail)"/>
+    <rect x="0" y="262" width="400" height="42" fill="var(--floor)"/><line x1="0" y1="262" x2="400" y2="262" stroke="#e2d4c1"/>
+    ${slots}${pots}</svg>`;
+}
+const icon=p=>`<svg viewBox="-24 -48 48 74">${pot(0,24,p.k,null,{noShadow:1})}</svg>`;
+const dropsHTML=n=>`<span class="drops">${[0,1,2].map(i=>`<i class="${i<n?'':'o'}"></i>`).join('')}</span>`;
+const need=p=>`<div class="need"><span class="dot"></span>${p.sun}h ${dropsHTML(p.w)}</div>`;
+const meter=(got,pre=0)=>`<div class="meter">${Array.from({length:18},(_,i)=>`<i class="${i<got?'on':i<got+pre?'pre':''}"></i>`).join('')}</div>`;
+const head=(streak=5)=>`<div class="gh"><span class="word">Balcon</span><span class="pill">Day 23 · Nov 18</span><span class="pill s">${streak}-day streak</span></div>`;
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function leaf(x,y,len,wid,ang,c,rib){return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang.toFixed(1)})"><path d="M0 0 Q${wid} ${-len*.45} 0 ${-len} Q${-wid} ${-len*.45} 0 0Z" fill="${c}"/>${rib?`<path d="M0 0 L0 ${-len*.88}" stroke="rgba(255,255,255,.16)" stroke-width="1.2"/>`:''}</g>`}
+function clump(r,n,x0,x1,y0,y1,base,spread,lenR,cols,rib){let o='';for(let i=0;i<n;i++){const x=x0+r()*(x1-x0),y=y0+r()*(y1-y0),L=lenR[0]+r()*(lenR[1]-lenR[0]);o+=leaf(x,y,L,L*(.28+r()*.12),base+(r()-.5)*spread,cols[Math.floor(r()*cols.length)],rib)}return o}
+function leafBg(){
+  const r=rng(23),C='var(--l',o=[];
+  o.push(`<ellipse cx="120" cy="640" rx="260" ry="150" fill="var(--l6)"/><ellipse cx="560" cy="660" rx="300" ry="160" fill="var(--l6)"/>`);
+  o.push(clump(r,26,-20,720,470,640,0,110,[90,170],[C+'5)',C+'6)',C+'4)'],0));
+  o.push(clump(r,14,-30,70,120,600,40,70,[80,150],[C+'4)',C+'5)'],0));
+  o.push(clump(r,10,640,740,120,600,-40,70,[80,150],[C+'4)',C+'5)'],0));
+  o.push(clump(r,30,-20,720,520,640,0,90,[60,130],[C+'2)',C+'3)',C+'4)'],1));
+  o.push(clump(r,12,-20,60,300,620,35,50,[70,120],[C+'1)',C+'2)',C+'3)'],1));
+  o.push(clump(r,9,170,330,-40,6,180,80,[45,90],[C+'3)',C+'4)',C+'5)'],1));
+  o.push(clump(r,22,-20,720,575,650,0,70,[45,95],[C+'1)',C+'2)'],1));
+  return `<div class="bgleaf"><svg viewBox="0 0 708 600" preserveAspectRatio="xMidYMid slice">${o.join('')}</svg></div>`;
+}
+function frame(label,game){
+  game=game.replace('<div class="g">','<div class="g">'+leafBg());
+  document.body.innerHTML=`<div class="nav"><div class="bar" style="width:120px;height:14px"></div><div class="bar" style="width:420px;height:34px;border-radius:99px"></div><span class="lbl">Balcon · V4 · ${label}</span></div>
+  <div class="lcol">${[150,120,170,110,140].map(w=>`<div class="bar" style="width:${w}px"></div>`).join('')}</div>
+  <div class="post"><div class="ph"><span class="av"></span><b>r/BalconDaily</b> · 3h</div><div class="pt">Daily Balcony #23 — six plants, one sunny afternoon</div>
+    ${game}<div class="pa"><span>412 votes</span><span>186 comments</span><span>Share</span></div></div>
+  <div class="rcol"><b style="font-size:15px">r/BalconDaily</b>${[260,220,240,180].map(w=>`<div class="bar" style="width:${w}px"></div>`).join('')}</div>`;
+}
+
+const U=52,OX=104,OY=226,C30=.866,SUN_T=7/12;
+const P=(x,y,z=0)=>[OX+(x-y)*C30*U,OY+(x+y)*.5*U-z*U];
+const pts=a=>a.map(q=>P(...q).map(v=>v.toFixed(1)).join(',')).join(' ');
+const poly=(a,attr)=>`<polygon points="${pts(a)}" ${attr}/>`;
+const ISO={T1:[.5,0,1.05],T2:[1.5,0,1.05],T3:[2.5,0,1.05],T4:[3.5,0,1.05],F1:[.5,1.35,0],F2:[1.5,1.35,0],F3:[2.5,1.35,0],F4:[3.5,1.35,0]};
+const D=[-.27,.95];
+function isoPot(x,y,z,k,n,o={}){
+  const[px,py]=P(x,y,z),[sx,sy]=P(x+D[0]*.32,y+D[1]*.32,z);
+  return `<g opacity="${o.ghost?.6:1}">
+    ${o.ghost?'':`<ellipse cx="${sx}" cy="${sy}" rx="24" ry="7" fill="var(--shadow)" transform="rotate(-18 ${sx} ${sy})"/>`}
+    <path d="M${px-13} ${py-26} L${px+13} ${py-26} L${px+10} ${py} L${px-10} ${py}Z" fill="var(--terra)"/>
+    <ellipse cx="${px}" cy="${py}" rx="10" ry="3.5" fill="var(--terra)"/>
+    <path d="M${px+4} ${py-25} L${px+13} ${py-26} L${px+10} ${py} L${px+5} ${py+1}Z" fill="var(--terra-d)" opacity=".35"/>
+    <ellipse cx="${px}" cy="${py-27}" rx="15" ry="5" fill="var(--terra-d)"/><ellipse cx="${px}" cy="${py-27.5}" rx="12" ry="3.6" fill="var(--soil)"/>
+    ${foliage(k,px,py-28)}${n===null?'':blooms(px,py-28,n)}</g>`;
+}
+function isoTile(id){
+  const[x,y,z]=ISO[id],s=slot(id),r=.32,q=z>0?.11:r,[px,py]=P(x,y,z);
+  return poly([[x-r,y-q,z],[x+r,y-q,z],[x+r,y+q,z],[x-r,y+q,z]],'fill="var(--paper)" fill-opacity=".85" stroke="var(--ink2)" stroke-opacity=".45" stroke-dasharray="3 3"')+
+    `<rect x="${px-21}" y="${py-44}" width="42" height="30" rx="6" fill="#fff" stroke="var(--line)"/>
+     <circle cx="${px-9}" cy="${py-33}" r="4" fill="var(--sun)"/><text x="${px-2}" y="${py-29}" font-size="12" font-weight="600" fill="var(--ink)">${s.sun}h</text>${drops(s.w,px-10,py-17)}`;
+}
+function isoScene(place={},held=null,warn={}){
+  const arcW=t=>{const a=Math.PI*(1-t);return[2+2.7*Math.cos(a),-1.5,1.7+2.2*Math.sin(a)]};
+  let arc='';for(let i=0;i<=40;i++)arc+=(i?'L':'M')+P(...arcW(i/40)).map(v=>v.toFixed(1)).join(' ');
+  let ticks='';for(let h=7;h<=19;h++){const[x,y]=P(...arcW((h-7)/12));ticks+=`<circle cx="${x}" cy="${y}" r="${h%3===0?2.2:1.2}" fill="var(--ink2)" opacity=".5"/>`;
+    if(h===9||h===13||h===17)ticks+=`<text x="${x}" y="${y-9}" font-size="9" text-anchor="middle" fill="var(--ink2)">${h>12?h-12+' pm':h+' am'}</text>`}
+  const[sx,sy]=P(...arcW(SUN_T));
+  let o=`<circle cx="${sx}" cy="${sy}" r="24" fill="var(--sun)" opacity=".22"/><path d="${arc}" fill="none" stroke="var(--ink2)" stroke-opacity=".45" stroke-width="1" stroke-dasharray="2 4"/>${ticks}<circle cx="${sx}" cy="${sy}" r="12" fill="var(--sun)"/>`;
+  o+=poly([[0,0,0],[4,0,0],[4,2,0],[0,2,0]],'fill="var(--floor)"');
+  o+=poly([[4,0,0],[4,2,0],[4,2,-.14],[4,0,-.14]],'fill="var(--edge1)"')+poly([[0,2,0],[4,2,0],[4,2,-.14],[0,2,-.14]],'fill="var(--edge2)"');
+  for(let i=1;i<4;i++)o+=`<line x1="${P(i,0)[0]}" y1="${P(i,0)[1]}" x2="${P(i,2)[0]}" y2="${P(i,2)[1]}" stroke="var(--joint)"/>`;
+  o+=`<line x1="${P(0,1)[0]}" y1="${P(0,1)[1]}" x2="${P(4,1)[0]}" y2="${P(4,1)[1]}" stroke="var(--joint)"/>`;
+  for(let b=.125;b<4;b+=.25){const a=P(b,0),e=P(b+D[0],D[1]);o+=`<line x1="${a[0]}" y1="${a[1]}" x2="${e[0]}" y2="${e[1]}" stroke="var(--shadow)" stroke-width="3"/>`}
+  o+=poly([[D[0]*.9+.05,D[1]*.9],[4+D[0]*.9,D[1]*.9],[4+D[0],D[1]+.12],[.05+D[0],D[1]+.12]],'fill="var(--shadow)"');
+  o+=poly([[0,0,0],[0,2,0],[0,2,1.9],[0,0,1.9]],'fill="var(--wall)" stroke="var(--wall2)"');
+  o+=poly([[0,.75,0],[0,1.45,0],[0,1.45,1.45],[0,.75,1.45]],'fill="var(--wall2)"')+poly([[0,0,1.9],[0,2,1.9],[-.12,2,1.9],[-.12,0,1.9]],'fill="var(--wall2)"');
+  for(let b=.125;b<4;b+=.25){const a=P(b,0,0),e=P(b,0,1);o+=`<line x1="${a[0]}" y1="${a[1]}" x2="${e[0]}" y2="${e[1]}" stroke="var(--rail)" stroke-width="1.3"/>`}
+  o+=poly([[0,-.12,1.05],[4,-.12,1.05],[4,.12,1.05],[0,.12,1.05]],'fill="#3d444c"')+poly([[0,.12,1.05],[4,.12,1.05],[4,.12,.99],[0,.12,.99]],'fill="var(--rail)"')+poly([[4,-.12,1.05],[4,.12,1.05],[4,.12,.99],[4,-.12,.99]],'fill="#1b1f24"');
+  const used={};Object.entries(place).forEach(([i,id])=>used[id]=['p',+i]);if(held)used[held[1]]=['h',held[0]];
+  ['T1','T2','T3','T4','F1','F2','F3','F4'].forEach(id=>{const[x,y,z]=ISO[id],u=used[id];
+    if(!u){o+=isoTile(id);return}
+    const p=PLANTS[u[1]],b=bloom(p,slot(id)),[px,py]=P(x,y,z);
+    if(u[0]==='h'){o+=`<rect x="${px-26}" y="${py-84}" width="52" height="84" rx="10" fill="none" stroke="var(--pine)" stroke-width="1.5" stroke-dasharray="4 3"/>${isoPot(x,y,z+.12,p.k,b,{ghost:1})}
+      <rect x="${px+8}" y="${py-96}" width="30" height="18" rx="5" fill="var(--pine)"/><text x="${px+23}" y="${py-83}" font-size="11" font-weight="600" fill="#fff" text-anchor="middle">+${b}</text>`}
+    else{o+=isoPot(x,y,z,p.k,b);if(warn[u[1]])o+=`<text x="${px}" y="${py-82}" font-size="10" font-weight="700" fill="var(--terra-d)" text-anchor="middle">${warn[u[1]]}</text>`}});
+  return `<svg viewBox="0 0 400 398" role="img" aria-label="Isometric balcony with sun path">${o}</svg>`;
+}
+
+
+const place={0:'T3',1:'T2',2:'F2',3:'T4'};
+const got=Object.entries(place).reduce((a,[i,id])=>a+bloom(PLANTS[i],slot(id)),0),pre=bloom(PLANTS[4],slot('T1'));
+frame('Game · isometric',`<div class="g">${head()}
+  <div class="scene">${isoScene(place,[4,'T1'],{3:'Too sunny'})}</div>
+  <div class="side">
+    <div><div class="eyebrow">Today's rule</div><h2>Give each plant the sun it needs.</h2><p class="sub">Six plants, eight spots. Each spot shows its hours of sun and water.</p></div>
+    <div class="tray">${PLANTS.map((p,i)=>{const cls=place[i]?'placed':i===4?'held':'';
+      return `<div class="card ${cls}">${i===4?'<span class="tag">Placing</span>':''}${icon(p)}<div><div class="n">${p.name}</div>${need(p)}</div></div>`}).join('')}</div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+      <div class="score"><span class="big">${got}</span><span class="of">/ 18 blooms</span><span class="plus">+${pre} if placed here</span></div>
+      ${meter(got,pre)}
+      <button class="cta" disabled>Place 2 more plants</button>
+      <div class="proof"><b>2,318</b> balconies planted today · median <b>13</b> blooms</div>
+    </div>
+  </div></div>`);
+</script>
+</body>
+</html>

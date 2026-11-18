@@ -1,6 +1,6 @@
-# STYLE — Balcon · Morning light (passe moderne V3)
+# STYLE — Balcon · Morning light (passe moderne + verdure, V4)
 
-Direction validée le 2026-11-18 : Morning light (V1-01) → scène isométrique (V3/V4) → **passe moderne inspirée de BridgeLab (V5)**. Planches de référence : `planches/v3/`. Desktop 1440 × 900 uniquement.
+Direction validée le 2026-11-18 : Morning light (V1-01) → scène isométrique (V3/V4) → passe moderne inspirée de BridgeLab (V5) → **fond de verdure luxuriante (V6)**. Planches de référence : `planches/v4/`. Desktop 1440 × 900 uniquement.
 
 ## Palette
 
@@ -21,6 +21,15 @@ Direction validée le 2026-11-18 : Morning light (V1-01) → scène isométrique
 | Ombre | Shadow | `rgba(40,35,25,.12)` | Seule ombre : ombres physiques de la scène |
 
 Règle : une seule couleur d'accent d'interface (Pine). Jaune = lumière, vert sauge = feuillage, bleu = eau, terre cuite = pots.
+
+## Fond de verdure (identité, V6)
+
+- La zone de jeu n'est plus beige : ciel vert pâle en dégradé doux (`Mist` `#eaf2e2` → `#d9e9cf`), bordure `#cfe0c4`.
+- Derrière le balcon, des feuilles en fer de lance en **6 nuances de vert**, du fond vers l'avant : `#c4dcb6` (buissons lointains), `#93c08c`, `#5c9a6c`, `#2f7352`, `#1d5641`, `#123a2d` (premier plan). Les feuilles foncées ont une nervure blanche à 16 %.
+- Composition fixe (graine déterministe) : massif dense en bas, feuilles qui montent le long des bords gauche et droit, quelques feuilles qui pendent en haut au centre-gauche. Le centre-haut reste dégagé pour l'arc du soleil.
+- Le panneau d'action (règle, plantes, score, bouton) est une **carte blanche à 96 %** posée sur la verdure : rayon 12, filet blanc, une seule ombre douce `0 14px 34px -20px rgba(12,48,32,.55)`. C'est la seule ombre d'interface autorisée, car elle détache la carte du feuillage.
+- Le mot « Balcon » et les étiquettes de l'en-tête sont sur des fonds blancs translucides, pour rester lisibles au-dessus des feuilles.
+- Pine reste l'unique accent d'interface : les verts du fond sont du décor, jamais des états.
 
 ## Typographie
 
