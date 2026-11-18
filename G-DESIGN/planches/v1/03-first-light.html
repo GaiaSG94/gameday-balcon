@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Balcon — V1 · 03 First light</title>
+<style>
+:root{
+  --bg:#1d1715; --bg2:#271f1c; --ink:#f6ece2; --ink2:#a8978a; --line:rgba(246,236,226,.12);
+  --amber:#f5b14c; --sil:#0f0b0a; --water:#8fb6c9;
+  --serif:"Iowan Old Style","Palatino Linotype","Palatino","Book Antiqua","URW Palladio L","P052",Georgia,serif;
+  --sans:"Seravek","Gill Sans Nova","Gill Sans","Ubuntu","Segoe UI","Calibri","DejaVu Sans",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e4dfdb;font-family:var(--sans);color:#2a211e}
+.board{width:1440px;height:900px;margin:0 auto;padding:26px 48px;display:flex;flex-direction:column;gap:16px;overflow:hidden}
+.bhead{display:flex;justify-content:space-between;align-items:flex-end}
+.bhead h1{font-size:30px;font-weight:600;letter-spacing:-.01em}
+.bhead p{color:#76685f;font-size:15px;margin-top:4px}
+.sw{display:flex;gap:10px}
+.sw div{width:84px;font-size:11px;color:#76685f}
+.sw i{display:block;height:36px;border-radius:8px;margin-bottom:4px;border:1px solid rgba(0,0,0,.08)}
+.frames{display:flex;gap:48px;align-items:flex-start}
+.cap{font-size:12px;color:#76685f;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.fw{overflow:hidden;border-radius:14px;box-shadow:0 20px 50px -20px rgba(40,20,10,.45)}
+.fw.d{width:950px;height:594px}.fw.m{width:273px;height:591px;border-radius:26px}
+.frame{transform-origin:top left;position:relative;overflow:hidden}
+.frame.d{width:1440px;height:900px;transform:scale(.66);background:#eceae6}
+.frame.m{width:390px;height:844px;transform:scale(.70);background:#f4f2ee}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;font-size:13px;color:#76685f;line-height:1.45}
+.notes b{color:#2a211e;display:block;margin-bottom:2px}
+/* neutral host chrome */
+.nav{position:absolute;left:0;top:0;width:100%;height:56px;background:#fff;border-bottom:1px solid #e3e1dd}
+.bar{background:#e5e2dd;border-radius:6px;height:10px}
+.lcol{position:absolute;left:24px;top:84px;width:220px;display:flex;flex-direction:column;gap:18px}
+.rcol{position:absolute;left:1092px;top:84px;width:316px;background:#fff;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.post{position:absolute;left:318px;top:76px;width:748px;background:#fff;border-radius:12px;padding:14px 20px 10px}
+.ph{display:flex;align-items:center;gap:8px;font-size:13px;color:#6b6b6b}
+.ph .av{width:24px;height:24px;border-radius:50%;background:var(--amber)}
+.ph b{color:#222}
+.pt{font-size:19px;font-weight:600;margin:6px 0 10px;color:#1c1c1c}
+.pa{display:flex;gap:10px;margin-top:10px}
+.pa span{font-size:12px;color:#555;background:#f0eeea;border-radius:99px;padding:7px 12px}
+.m .status{height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font-size:15px;font-weight:600}
+.m .top{height:48px;border-bottom:1px solid #e3e1dd;display:flex;align-items:center;padding:0 16px;gap:12px;background:#fff}
+.m .post{position:static;width:auto;border-radius:0;padding:10px 0 0}
+.m .ph,.m .pt{padding:0 16px}.m .pt{font-size:16px;margin:2px 0 6px}
+.m .pa{padding:0 16px}
+
+/* ---------- GAME ---------- */
+.g{background:var(--bg);color:var(--ink);border-radius:14px;overflow:hidden;display:grid;font-variant-numeric:tabular-nums lining-nums}
+.d .g{height:560px;grid-template-columns:1fr 290px;grid-template-rows:auto 1fr}
+.m .g{height:640px;border-radius:0;grid-template-rows:auto auto 1fr}
+.gh{display:flex;align-items:center;gap:8px;padding:16px 20px 0}
+.d .gh{grid-column:1/3}
+.word{font-family:var(--serif);font-size:24px;font-style:italic;margin-right:auto;letter-spacing:.01em}
+.pill{font-size:12px;padding:5px 11px;border-radius:99px;border:1px solid var(--line);color:var(--ink2)}
+.pill.s{color:var(--amber);border-color:rgba(245,177,76,.35)}
+.rule h2{font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2}
+.rule p{font-size:13px;color:var(--ink2);margin-top:4px}
+.scene svg{width:100%;display:block}
+.side{display:flex;flex-direction:column;gap:12px;padding:14px 20px 18px 0}
+.m .side{padding:0 14px 12px;gap:10px}
+.tray{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:99px;padding:5px 11px 5px 6px;font-size:12px;color:var(--ink2);background:var(--bg2)}
+.m .chip{flex:1 1 30%;padding:4px 8px 4px 4px}
+.chip svg{width:22px;height:22px}
+.chip .n{font-family:var(--serif);font-size:14px;color:var(--ink)}
+.chip .h{margin-left:auto}
+.chip.placed{background:transparent;opacity:.6}
+.chip .h{white-space:nowrap}
+.chip.held{border-color:var(--amber);color:var(--ink);box-shadow:0 0 0 3px rgba(245,177,76,.15),0 0 24px -6px var(--amber)}
+.bd{color:var(--amber);letter-spacing:1px}.bd .o{color:var(--line)}
+.score{display:flex;align-items:baseline;gap:8px}
+.score .big{font-family:var(--serif);font-size:46px;line-height:1}
+.m .score .big{font-size:36px}
+.score .of{font-size:14px;color:var(--ink2)}
+.score .plus{margin-left:auto;font-size:13px;color:var(--amber)}
+.meter{height:4px;border-radius:2px;background:var(--line);position:relative;overflow:hidden}
+.meter i{position:absolute;top:0;bottom:0;left:0;background:var(--amber);border-radius:2px}
+.meter i.pre{opacity:.35}
+.cta{border:1px solid rgba(245,177,76,.35);background:transparent;color:var(--ink2);font:inherit;font-size:15px;height:46px;border-radius:99px;width:100%}
+.proof{font-size:12px;color:var(--ink2);text-align:center}
+.proof b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="bhead">
+    <div>
+      <h1>Balcon — Main page · Direction 03 · First light</h1>
+      <p>A warm dark balcony at dawn. One glowing dome is the sky; each spot gets a column of light as tall as its hours.</p>
+    </div>
+    <div class="sw">
+      <div><i style="background:#1d1715"></i>Ember #1d1715</div>
+      <div><i style="background:#f6ece2"></i>Cream #f6ece2</div>
+      <div><i style="background:#f5b14c"></i>Amber #f5b14c</div>
+      <div><i style="background:#a8978a"></i>Ash #a8978a</div>
+      <div><i style="background:#8fb6c9"></i>Water #8fb6c9</div>
+    </div>
+  </div>
+  <div class="frames">
+    <div><div class="cap">Desktop · 1440 × 900</div><div class="fw d"><div class="frame d" id="fd"></div></div></div>
+    <div><div class="cap">Mobile · 390 × 844</div><div class="fw m"><div class="frame m" id="fm"></div></div></div>
+  </div>
+  <div class="notes">
+    <div><b>Palette</b>Warm near-black ground so light is the only bright thing on screen. Amber is the single accent (sun, light columns, blooms, active plant). Water is a quiet blue, never decorative.</div>
+    <div><b>Type</b>A humanist old-style serif for the name, the rule and scores (lining, tabular figures); a humanist sans for small labels. Sizes 46 / 22 / 12.</div>
+    <div><b>Motif</b>The sun's dome glows over the balcony like a horizon. Pots are silhouettes with an amber rim, and cast long low shadows away from the sun.</div>
+  </div>
+</div>
+<script>
+const ORDER=['T1','T2','T3','T4','F1','F2','F3','F4'];
+const SLOTS={T1:[6,2],T2:[7,1],T3:[8,1],T4:[5,2],F1:[3,3],F2:[2,3],F3:[2,2],F4:[4,1]};
+const PLANTS=[
+  {name:'Lavender',k:'spike',sun:8,w:1,at:'T3'},{name:'Geranium',k:'round',sun:7,w:1,at:'T2'},
+  {name:'Fern',k:'frond',sun:2,w:3,at:'F2'},{name:'Mint',k:'pair',sun:4,w:3,at:'T4',warn:'too sunny'},
+  {name:'Basil',k:'broad',sun:6,w:2,held:'T1'},{name:'Begonia',k:'heart',sun:3,w:2}];
+const BASE=258;
+const slot=id=>{const i=ORDER.indexOf(id),[sun,w]=SLOTS[id];return{x:38+i*46.3,sun,w,n:i+1}};
+const bloom=(p,s)=>Math.max(0,3-Math.abs(p.sun-s.sun)-Math.abs(p.w-s.w));
+const F='var(--sil)',E='stroke="var(--amber)" stroke-opacity=".55" stroke-width=".9"';
+function foliage(k,x,y){
+  let o='';
+  if(k==='spike')for(let i=-2;i<=2;i++){const h=26-Math.abs(i)*5;o+=`<ellipse cx="${x+i*5}" cy="${y-h/2}" rx="2.4" ry="${h/2}" fill="${F}" ${E}/>`}
+  if(k==='round')o=`<circle cx="${x-8}" cy="${y-9}" r="9" fill="${F}" ${E}/><circle cx="${x+8}" cy="${y-10}" r="9" fill="${F}" ${E}/><circle cx="${x}" cy="${y-19}" r="10" fill="${F}" ${E}/>`;
+  if(k==='frond')[-22,-9,9,22].forEach(d=>o+=`<path d="M${x} ${y} Q${x+d*.4} ${y-24} ${x+d} ${y-27}" stroke="var(--amber)" stroke-opacity=".55" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M${x} ${y} Q${x+d*.4} ${y-24} ${x+d} ${y-27}" stroke="${F}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`);
+  if(k==='pair'){o=`<line x1="${x}" y1="${y}" x2="${x}" y2="${y-30}" stroke="var(--amber)" stroke-opacity=".5"/>`;[7,16,25].forEach(d=>o+=`<ellipse cx="${x-6}" cy="${y-d}" rx="6.5" ry="3.6" fill="${F}" ${E} transform="rotate(-25 ${x-6} ${y-d})"/><ellipse cx="${x+6}" cy="${y-d}" rx="6.5" ry="3.6" fill="${F}" ${E} transform="rotate(25 ${x+6} ${y-d})"/>`)}
+  if(k==='broad')[-32,0,32].forEach(r=>o+=`<ellipse cx="${x}" cy="${y-13}" rx="8" ry="13" fill="${F}" ${E} transform="rotate(${r} ${x} ${y})"/>`);
+  if(k==='heart')o=`<circle cx="${x-7}" cy="${y-9}" r="8" fill="${F}" ${E}/><circle cx="${x+7}" cy="${y-9}" r="8" fill="${F}" ${E}/><circle cx="${x}" cy="${y-18}" r="9" fill="${F}" ${E}/>`;
+  return o;
+}
+function pot(x,base,k,n,ghost,icon){
+  const t=base-20;
+  const bl=n===null?'':[[-9,-26],[0,-33],[9,-26]].map(([dx,dy],i)=>i<n?`<circle cx="${x+dx}" cy="${t+dy}" r="3.8" fill="var(--amber)"/><circle cx="${x+dx}" cy="${t+dy}" r="8" fill="var(--amber)" opacity=".18"/>`:`<circle cx="${x+dx}" cy="${t+dy}" r="3" fill="none" stroke="var(--ink2)" stroke-opacity=".4" stroke-dasharray="1.5 1.5"/>`).join('');
+  return `<g opacity="${ghost?.6:1}">${icon?'':`<path d="M${x-10} ${base} L${x-62} ${base+6} L${x-58} ${base+12} L${x+10} ${base+2}Z" fill="#000" opacity=".45"/>`}
+    <path d="M${x-12} ${t} L${x+12} ${t} L${x+9} ${base} L${x-9} ${base}Z" fill="${F}" stroke="var(--amber)" stroke-opacity=".7" stroke-width="1"/>
+    <rect x="${x-14}" y="${t-4}" width="28" height="5" rx="1.5" fill="${F}" stroke="var(--amber)" stroke-opacity=".7" stroke-width="1"/>${foliage(k,x,t-4)}${bl}</g>`;
+}
+function scene(){
+  const dome=t=>{const a=Math.PI*(1-t);return[200+182*Math.cos(a),BASE-196*Math.sin(a)]};
+  let ticks='';for(let h=7;h<=19;h++){const[x,y]=dome((h-7)/12);ticks+=`<circle cx="${x}" cy="${y}" r="${h%3===0?1.8:1}" fill="var(--amber)" opacity=".7"/>`;
+    if(h===7||h===13||h===19)ticks+=`<text x="${x}" y="${y-8}" font-size="9" fill="var(--ink2)" text-anchor="middle" font-family="var(--sans)">${h===13?'1 pm':h===7?'7 am':'7 pm'}</text>`}
+  const[sx,sy]=dome(7/12);
+  let cols='',pots='';
+  ORDER.forEach(id=>{const s=slot(id),h=s.sun*17,used=PLANTS.find(p=>p.at===id||p.held===id);
+    cols+=`<rect x="${s.x-15}" y="${BASE-h}" width="30" height="${h}" fill="url(#col)"/>
+      <text x="${s.x}" y="${BASE-h-6}" font-size="11" fill="var(--amber)" text-anchor="middle" font-family="var(--serif)">${s.sun}h</text>
+      ${[0,1,2].map(i=>`<circle cx="${s.x-7+i*7}" cy="${BASE+14}" r="2.2" fill="${i<s.w?'var(--water)':'none'}" stroke="var(--water)" stroke-opacity=".6" stroke-width=".8"/>`).join('')}
+      ${used?'':`<rect x="${s.x-14}" y="${BASE-34}" width="28" height="34" rx="6" fill="none" stroke="var(--ink2)" stroke-opacity=".45" stroke-dasharray="3 3"/>`}`});
+  PLANTS.forEach(p=>{const id=p.at||p.held;if(!id)return;const s=slot(id),b=bloom(p,s);
+    if(p.held)pots+=`${pot(s.x,BASE-8,p.k,b,1)}<rect x="${s.x-19}" y="${BASE-78}" width="38" height="80" rx="10" fill="none" stroke="var(--amber)" stroke-width="1.4" stroke-dasharray="4 3"/>
+      <rect x="${s.x+4}" y="${BASE-90}" width="28" height="16" rx="8" fill="var(--amber)"/><text x="${s.x+18}" y="${BASE-78}" font-size="11" font-weight="700" fill="var(--bg)" text-anchor="middle" font-family="var(--sans)">+${b}</text>`;
+    else{pots+=pot(s.x,BASE,p.k,b);if(p.warn)pots+=`<text x="${s.x}" y="${BASE+30}" font-size="9" fill="var(--amber)" text-anchor="middle" font-style="italic" font-family="var(--serif)">${p.warn}</text>`}});
+  return `<svg viewBox="0 18 400 286" role="img" aria-label="Balcony at dawn with light columns">
+    <defs><radialGradient id="dome" cx="200" cy="${BASE}" r="250" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f5b14c" stop-opacity=".30"/><stop offset=".72" stop-color="#f5b14c" stop-opacity=".10"/><stop offset=".8" stop-color="#f5b14c" stop-opacity="0"/></radialGradient>
+    <linearGradient id="col" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f5b14c" stop-opacity=".42"/><stop offset="1" stop-color="#f5b14c" stop-opacity=".03"/></linearGradient></defs>
+    <circle cx="200" cy="${BASE}" r="250" fill="url(#dome)"/>
+    <path d="M18 ${BASE} A182 196 0 0 1 382 ${BASE}" fill="none" stroke="var(--amber)" stroke-opacity=".5" stroke-width="1"/>
+    ${ticks}<circle cx="${sx}" cy="${sy}" r="18" fill="var(--amber)" opacity=".2"/><circle cx="${sx}" cy="${sy}" r="8" fill="#ffe2a8"/>
+    ${cols}<line x1="0" y1="${BASE}" x2="400" y2="${BASE}" stroke="var(--amber)" stroke-opacity=".35"/>
+    <line x1="${slot('F1').x-23}" y1="${BASE-4}" x2="${slot('F1').x-23}" y2="${BASE+22}" stroke="var(--line)"/>
+    <text x="${slot('T2').x+23}" y="${BASE+38}" font-size="9" fill="var(--ink2)" text-anchor="middle" font-family="var(--sans)" letter-spacing="1">ON THE RAIL</text>
+    <text x="${slot('F2').x+23}" y="${BASE+38}" font-size="9" fill="var(--ink2)" text-anchor="middle" font-family="var(--sans)" letter-spacing="1">ON THE FLOOR</text>
+    ${pots}</svg>`;
+}
+function tray(){
+  return `<div class="tray">${PLANTS.map(p=>{const id=p.at||p.held,b=id?bloom(p,slot(id)):null,cls=p.at?'placed':p.held?'held':'';
+    const right=p.at?`<span class="bd">${'●'.repeat(b)}<span class="o">${'●'.repeat(3-b)}</span></span>`:`${p.sun}h · <span style="color:var(--water)">${'●'.repeat(p.w)}</span><span style="color:var(--line)">${'●'.repeat(3-p.w)}</span>`;
+    return `<div class="chip ${cls}"><svg viewBox="-20 -42 40 46">${pot(0,2,p.k,null,0,1)}</svg><span class="n">${p.name}</span><span class="h">${right}</span></div>`}).join('')}</div>`;
+}
+function foot(){
+  const got=PLANTS.filter(p=>p.at).reduce((a,p)=>a+bloom(p,slot(p.at)),0);
+  const pre=PLANTS.filter(p=>p.held).reduce((a,p)=>a+bloom(p,slot(p.held)),0);
+  const left=PLANTS.filter(p=>!p.at).length;
+  return `<div style="display:flex;flex-direction:column;gap:9px">
+    <div class="score"><span class="big">${got}</span><span class="of">of 18 blooms</span><span class="plus">+${pre} here</span></div>
+    <div class="meter"><i class="pre" style="width:${(got+pre)/18*100}%"></i><i style="width:${got/18*100}%"></i></div>
+    <button class="cta" disabled>${left} plants left to place</button>
+    <div class="proof"><b>2,318</b> balconies lit today · median <b>13</b> blooms</div></div>`;
+}
+function game(mode){
+  const head=`<div class="gh"><span class="word">Balcon</span><span class="pill">Day 23 · Nov 18</span><span class="pill s">5-day streak</span></div>`;
+  const rule=`<div class="rule"><h2>Give each plant the sun it needs.</h2><p>Six plants, eight spots. Taller light means more hours of sun.</p></div>`;
+  if(mode==='d')return `<div class="g">${head}<div class="scene" style="align-self:center;padding:0 6px 0 10px">${scene()}</div><div class="side">${rule}${tray()}<div style="margin-top:auto">${foot()}</div></div></div>`;
+  return `<div class="g">${head}<div class="rule" style="padding:8px 16px 0">${rule.match(/<h2>.*<\/h2>/)[0]}</div><div class="scene">${scene()}</div><div class="side">${tray()}${foot()}</div></div>`;
+}
+const postHead=m=>`<div class="ph"><span class="av"></span><b>r/BalconDaily</b> · 3h</div><div class="pt">Daily Balcony #23${m?'':' — six plants, one sunny afternoon'}</div>`;
+const actions=`<div class="pa"><span>412 votes</span><span>186 comments</span><span>Share</span></div>`;
+document.getElementById('fd').innerHTML=`<div class="nav"></div>
+  <div class="lcol">${[150,120,170,110,140].map(w=>`<div class="bar" style="width:${w}px"></div>`).join('')}</div>
+  <div class="post">${postHead(0)}${game('d')}${actions}</div>
+  <div class="rcol"><b style="font-size:15px">r/BalconDaily</b>${[260,220,240,180].map(w=>`<div class="bar" style="width:${w}px"></div>`).join('')}</div>`;
+document.getElementById('fm').innerHTML=`<div class="status"><span>9:41</span><span>●●●</span></div>
+  <div class="top"><div class="bar" style="width:28px;height:28px;border-radius:50%"></div><div class="bar" style="width:180px;height:30px;border-radius:99px"></div></div>
+  <div class="post">${postHead(1)}${game('m')}${actions}</div>`;
+</script>
+</body>
+</html>
