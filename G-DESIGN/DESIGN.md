@@ -42,3 +42,14 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 **Hypothèses de démo à valider** : partage par commentaire avec un texte prérempli ; départage du classement au temps ; « avg blooms » dans les statistiques de série.
 
 **En attente** : revue des 4 planches par Gaia, puis `/lock`.
+
+## V3 — 2026-11-18 · Variante isométrique de la page Jeu (/variantes + /compare)
+
+**Demande de Gaia** : « tu pourrais le faire en 3D ? » → option 1 retenue : isométrique en SVG (pas de WebGL : aucune librairie à embarquer, compatible CSP Devvit, caméra fixe pour garder la lecture en 5 s).
+
+**Fait**
+- `planches/v2/02-jeu-iso.html` : même style Morning light, mêmes données et états que `02-jeu.html`. Le balcon devient une petite maquette : mur et porte à gauche, rambarde avec sa main courante, sol en dalles. L'ombre des barreaux et de la main courante est projetée au sol (elle explique pourquoi le sol reçoit moins de soleil), les pots ont du volume et une ombre orientée selon le soleil, l'arc du soleil passe au-dessus du balcon en perspective.
+- `planches/v2/compare-jeu-plat-vs-iso.html` : A plat (validé) contre B isométrique, côte à côte.
+- Générateur : `isoScene()` ajouté dans `tools/gen-planches-v2.py` ; les autres planches ne changent pas.
+
+**En attente** : choix A ou B par Gaia. Si B : déclinaison iso de Post et Carte de fin (Séries & classement n'a pas de scène), puis mise à jour de `STYLE.md`.
