@@ -1,4 +1,6 @@
-# STYLE — Balcon · Morning light (passe moderne + verdure, V4)
+# STYLE — Balcon · Morning light (passe moderne + verdure, V4) — VERROUILLÉ le 2026-11-18
+
+> **Style verrouillé** (`/lock`, Gaia, 2026-11-18). Fin des explorations : toute évolution passe par `/delta` et une nouvelle version datée dans `DESIGN.md`. Référence : `planches/v4/`.
 
 Direction validée le 2026-11-18 : Morning light (V1-01) → scène isométrique (V3/V4) → passe moderne inspirée de BridgeLab (V5) → **fond de verdure luxuriante (V6)**. Planches de référence : `planches/v4/`. Desktop 1440 × 900 uniquement.
 

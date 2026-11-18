@@ -96,3 +96,9 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 - `tools/gen-planches-v4.py` (V3 + couche de feuillage déterministe `leafBg()`) ; V1 à V3 non modifiées.
 
 **En attente** : la fin du message de Gaia, sa revue, puis `/lock`.
+
+## LOCK — 2026-11-18
+
+`/lock` par Gaia. Style verrouillé sur la V6 : Morning light, scène isométrique, passe moderne (réf. BridgeLab), fond de verdure luxuriante. Les 4 pages sont validées. Référence pour le build : `STYLE.md` + `planches/v4/` (Post, Jeu, Carte de fin, Séries & classement).
+
+Restent ouvertes pour le build (questions produit de `PAGES.md`) : nombre d'emplacements, formule de score, eau fixe ou à répartir, déplacement avant validation, place des séries et du classement.
