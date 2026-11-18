@@ -247,8 +247,8 @@ function isoPot(x,y,z,k,n,o={}){
     ${foliage(k,px,py-28)}${n===null?'':blooms(px,py-28,n)}</g>`;
 }
 function isoTile(id){
-  const[x,y,z]=ISO[id],s=slot(id),r=.32,[px,py]=P(x,y,z);
-  return poly([[x-r,y-r,z],[x+r,y-r,z],[x+r,y+r,z],[x-r,y+r,z]],'fill="var(--paper)" fill-opacity=".85" stroke="var(--ink2)" stroke-opacity=".45" stroke-dasharray="3 3"')+
+  const[x,y,z]=ISO[id],s=slot(id),r=.32,q=z>0?.11:r,[px,py]=P(x,y,z);
+  return poly([[x-r,y-q,z],[x+r,y-q,z],[x+r,y+q,z],[x-r,y+q,z]],'fill="var(--paper)" fill-opacity=".85" stroke="var(--ink2)" stroke-opacity=".45" stroke-dasharray="3 3"')+
     `<rect x="${px-21}" y="${py-44}" width="42" height="30" rx="9" fill="var(--paper)" stroke="var(--line)"/>
      <circle cx="${px-9}" cy="${py-33}" r="4" fill="var(--sun)"/><text x="${px-2}" y="${py-29}" font-size="12" font-weight="700" fill="var(--ink)">${s.sun}h</text>${drops(s.w,px-10,py-17)}`;
 }
@@ -297,6 +297,12 @@ frame('Game · isometric',`<div class="g">${head()}
     </div>
   </div></div>`);
 """)
+
+for src, label in (("01-post", "Post · isometric"), ("03-carte-de-fin", "End card · isometric")):
+    old_label, body = PAGES[src]
+    body = body.replace("${scene(", "${isoScene(").replace(f"frame('{old_label}'", f"frame('{label}'")
+    assert "isoScene(" in body
+    PAGES[src + "-iso"] = (label, body)
 
 for name, (label, body) in PAGES.items():
     html = f"""<!doctype html>

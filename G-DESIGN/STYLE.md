@@ -37,9 +37,12 @@ Règle : une seule couleur d'accent (terre cuite). Le jaune veut toujours dire l
 ## Composants
 
 - **En-tête** : mot « Balcon » (20/700) + pastilles « Day 23 · Nov 18 » et « 5-day streak » (terre cuite).
-- **Scène** : arc du soleil en pointillé avec repères d'heure, soleil plein + halo, rambarde (4 emplacements) et sol (4 emplacements).
-- **Emplacement vide** : carte papier en pointillé, point soleil + « 6h », 1 à 3 gouttes.
-- **Pot** : terre cuite + bord foncé, silhouette de feuillage propre à chaque plante, 3 emplacements de fleur (pleins = jaune cerclé de terre cuite, vides = cercle pointillé).
+- **Scène (isométrique, validée le 2026-11-18)** : projection isométrique en SVG, caméra fixe (axe x de la rambarde vers la droite et vers le bas, axe y vers la gauche et vers le bas, 1 unité = 52 px). Balcon de 4 × 2 unités : mur et porte à gauche (`#f3e9dc` / `#e8dccb`), sol en dalles (`Floor`, joints `#e6d8c5`), chants de dalle `#e6d6c2` / `#dccab3`. Rambarde au fond : barreaux `#d8cbbb`, main courante dessus `#a48c7b`, face `Rail`, bout `#7a6556`. 4 emplacements sur la main courante, 4 au sol.
+- **Ombres de la scène** : l'ombre des barreaux et de la main courante est projetée au sol dans la direction opposée au soleil (`Shadow`). Elle montre pourquoi le sol est moins ensoleillé, donc elle fait partie de la lecture du jeu.
+- **Arc du soleil** : courbe pointillée en perspective, au-dessus et au-delà de la rambarde, avec repères d'heure (9 am, 1 pm, 5 pm). Soleil plein + halo à l'heure du jour.
+- **Emplacement vide** : losange papier en pointillé posé sur la surface (affiné à la largeur de la main courante pour la rambarde), étiquette au-dessus : point soleil + « 6h », 1 à 3 gouttes.
+- Scène plate (V1/V2) conservée dans les planches `01-post`, `02-jeu`, `03-carte-de-fin` pour l'historique ; la référence est désormais `*-iso.html`.
+- **Pot** : en volume (corps terre cuite, flanc droit assombri, bord elliptique foncé, terre visible), ombre au sol orientée selon le soleil ; terre cuite + bord foncé, silhouette de feuillage propre à chaque plante, 3 emplacements de fleur (pleins = jaune cerclé de terre cuite, vides = cercle pointillé).
 - **Carte plante** : icône du pot, nom, besoin (soleil + gouttes). États : libre, en cours (bord terre cuite 2 px + étiquette « Placing »), posée (bord pointillé, texte atténué).
 - **Score** : nombre 40/700 + « / 18 blooms » + pastille de gain (« +3 if placed here »). Jauge de 18 segments : plein = jaune, aperçu = hachuré.
 - **Bouton principal** : pilule 46 px, terre cuite + texte blanc. Désactivé : `#eadfd3`, texte `#9b8b7d`, libellé qui dit ce qui manque (« Place 2 more plants »).
