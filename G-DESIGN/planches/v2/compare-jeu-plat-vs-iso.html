@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Balcon — V2 · Compare flat vs isometric</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:#e6e0d7;font-family:"Seravek","Gill Sans Nova","Gill Sans","Ubuntu","Segoe UI",sans-serif;color:#2e2622;padding:24px 40px}
+h1{font-size:26px;font-weight:600}
+.row{display:flex;gap:40px;margin-top:16px}
+.cap{font-size:13px;color:#7a6d63;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.cap b{color:#2e2622}
+.win{width:660px;height:640px;overflow:hidden;border-radius:14px;position:relative;box-shadow:0 20px 50px -24px rgba(60,40,20,.4)}
+.win iframe{position:absolute;left:-286px;top:-68px;width:1440px;height:900px;border:0;transform:scale(.9);transform-origin:0 0;pointer-events:none}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:14px;font-size:13px;color:#7a6d63;line-height:1.45}
+.notes b{color:#2e2622}
+</style>
+</head>
+<body>
+<h1>Balcon — Game page · flat (validated) vs isometric</h1>
+<div class="row">
+  <div><div class="cap"><b>A · Flat</b> — 02-jeu.html</div><div class="win"><iframe src="02-jeu.html" title="Flat game page"></iframe></div></div>
+  <div><div class="cap"><b>B · Isometric</b> — 02-jeu-iso.html</div><div class="win"><iframe src="02-jeu-iso.html" title="Isometric game page"></iframe></div></div>
+</div>
+<div class="notes">
+  <div><b>A</b> — the sun arc is a true horizon, all 8 spots sit on two clean lines: fastest to read. Less depth, less "object".</div>
+  <div><b>B</b> — the balcony becomes a small diorama: the rail's shadow stripes on the floor show <i>why</i> floor spots get less sun. The arc reads diagonally and the scene is a bit smaller.</div>
+</div>
+</body>
+</html>

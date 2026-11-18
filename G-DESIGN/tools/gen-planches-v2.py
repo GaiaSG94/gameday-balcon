@@ -229,6 +229,75 @@ frame('Streaks & leaderboard',`<div class="g">${head(6)}
   </div></div>`);
 """)
 
+ISO_JS = r"""
+const U=52,OX=104,OY=226,C30=.866,SUN_T=7/12;
+const P=(x,y,z=0)=>[OX+(x-y)*C30*U,OY+(x+y)*.5*U-z*U];
+const pts=a=>a.map(q=>P(...q).map(v=>v.toFixed(1)).join(',')).join(' ');
+const poly=(a,attr)=>`<polygon points="${pts(a)}" ${attr}/>`;
+const ISO={T1:[.5,0,1.05],T2:[1.5,0,1.05],T3:[2.5,0,1.05],T4:[3.5,0,1.05],F1:[.5,1.35,0],F2:[1.5,1.35,0],F3:[2.5,1.35,0],F4:[3.5,1.35,0]};
+const D=[-.27,.95];
+function isoPot(x,y,z,k,n,o={}){
+  const[px,py]=P(x,y,z),[sx,sy]=P(x+D[0]*.32,y+D[1]*.32,z);
+  return `<g opacity="${o.ghost?.6:1}">
+    ${o.ghost?'':`<ellipse cx="${sx}" cy="${sy}" rx="24" ry="7" fill="var(--shadow)" transform="rotate(-18 ${sx} ${sy})"/>`}
+    <path d="M${px-13} ${py-26} L${px+13} ${py-26} L${px+10} ${py} L${px-10} ${py}Z" fill="var(--terra)"/>
+    <ellipse cx="${px}" cy="${py}" rx="10" ry="3.5" fill="var(--terra)"/>
+    <path d="M${px+4} ${py-25} L${px+13} ${py-26} L${px+10} ${py} L${px+5} ${py+1}Z" fill="var(--terra-d)" opacity=".35"/>
+    <ellipse cx="${px}" cy="${py-27}" rx="15" ry="5" fill="var(--terra-d)"/><ellipse cx="${px}" cy="${py-27.5}" rx="12" ry="3.6" fill="#6b4a3a"/>
+    ${foliage(k,px,py-28)}${n===null?'':blooms(px,py-28,n)}</g>`;
+}
+function isoTile(id){
+  const[x,y,z]=ISO[id],s=slot(id),r=.32,[px,py]=P(x,y,z);
+  return poly([[x-r,y-r,z],[x+r,y-r,z],[x+r,y+r,z],[x-r,y+r,z]],'fill="var(--paper)" fill-opacity=".85" stroke="var(--ink2)" stroke-opacity=".45" stroke-dasharray="3 3"')+
+    `<rect x="${px-21}" y="${py-44}" width="42" height="30" rx="9" fill="var(--paper)" stroke="var(--line)"/>
+     <circle cx="${px-9}" cy="${py-33}" r="4" fill="var(--sun)"/><text x="${px-2}" y="${py-29}" font-size="12" font-weight="700" fill="var(--ink)">${s.sun}h</text>${drops(s.w,px-10,py-17)}`;
+}
+function isoScene(place={},held=null,warn={}){
+  const arcW=t=>{const a=Math.PI*(1-t);return[2+2.7*Math.cos(a),-1.5,1.7+2.2*Math.sin(a)]};
+  let arc='';for(let i=0;i<=40;i++)arc+=(i?'L':'M')+P(...arcW(i/40)).map(v=>v.toFixed(1)).join(' ');
+  let ticks='';for(let h=7;h<=19;h++){const[x,y]=P(...arcW((h-7)/12));ticks+=`<circle cx="${x}" cy="${y}" r="${h%3===0?2.2:1.2}" fill="var(--ink2)" opacity=".5"/>`;
+    if(h===9||h===13||h===17)ticks+=`<text x="${x}" y="${y-9}" font-size="9" text-anchor="middle" fill="var(--ink2)">${h>12?h-12+' pm':h+' am'}</text>`}
+  const[sx,sy]=P(...arcW(SUN_T));
+  let o=`<circle cx="${sx}" cy="${sy}" r="24" fill="var(--sun)" opacity=".22"/><path d="${arc}" fill="none" stroke="var(--sun)" stroke-width="2.5" stroke-dasharray="1 6" stroke-linecap="round"/>${ticks}<circle cx="${sx}" cy="${sy}" r="12" fill="var(--sun)"/>`;
+  o+=poly([[0,0,0],[4,0,0],[4,2,0],[0,2,0]],'fill="var(--floor)"');
+  o+=poly([[4,0,0],[4,2,0],[4,2,-.14],[4,0,-.14]],'fill="#e6d6c2"')+poly([[0,2,0],[4,2,0],[4,2,-.14],[0,2,-.14]],'fill="#dccab3"');
+  for(let i=1;i<4;i++)o+=`<line x1="${P(i,0)[0]}" y1="${P(i,0)[1]}" x2="${P(i,2)[0]}" y2="${P(i,2)[1]}" stroke="#e6d8c5"/>`;
+  o+=`<line x1="${P(0,1)[0]}" y1="${P(0,1)[1]}" x2="${P(4,1)[0]}" y2="${P(4,1)[1]}" stroke="#e6d8c5"/>`;
+  for(let b=.125;b<4;b+=.25){const a=P(b,0),e=P(b+D[0],D[1]);o+=`<line x1="${a[0]}" y1="${a[1]}" x2="${e[0]}" y2="${e[1]}" stroke="var(--shadow)" stroke-width="3"/>`}
+  o+=poly([[D[0]*.9+.05,D[1]*.9],[4+D[0]*.9,D[1]*.9],[4+D[0],D[1]+.12],[.05+D[0],D[1]+.12]],'fill="var(--shadow)"');
+  o+=poly([[0,0,0],[0,2,0],[0,2,1.9],[0,0,1.9]],'fill="#f3e9dc" stroke="#e2d4c1"');
+  o+=poly([[0,.75,0],[0,1.45,0],[0,1.45,1.45],[0,.75,1.45]],'fill="#e8dccb"')+poly([[0,0,1.9],[0,2,1.9],[-.12,2,1.9],[-.12,0,1.9]],'fill="#e2d4c1"');
+  for(let b=.125;b<4;b+=.25){const a=P(b,0,0),e=P(b,0,1);o+=`<line x1="${a[0]}" y1="${a[1]}" x2="${e[0]}" y2="${e[1]}" stroke="#d8cbbb" stroke-width="2.5"/>`}
+  o+=poly([[0,-.12,1.05],[4,-.12,1.05],[4,.12,1.05],[0,.12,1.05]],'fill="#a48c7b"')+poly([[0,.12,1.05],[4,.12,1.05],[4,.12,.93],[0,.12,.93]],'fill="var(--rail)"')+poly([[4,-.12,1.05],[4,.12,1.05],[4,.12,.93],[4,-.12,.93]],'fill="#7a6556"');
+  const used={};Object.entries(place).forEach(([i,id])=>used[id]=['p',+i]);if(held)used[held[1]]=['h',held[0]];
+  ['T1','T2','T3','T4','F1','F2','F3','F4'].forEach(id=>{const[x,y,z]=ISO[id],u=used[id];
+    if(!u){o+=isoTile(id);return}
+    const p=PLANTS[u[1]],b=bloom(p,slot(id)),[px,py]=P(x,y,z);
+    if(u[0]==='h'){o+=`<rect x="${px-26}" y="${py-84}" width="52" height="84" rx="12" fill="none" stroke="var(--terra)" stroke-width="2" stroke-dasharray="5 4"/>${isoPot(x,y,z+.12,p.k,b,{ghost:1})}
+      <rect x="${px+8}" y="${py-96}" width="30" height="18" rx="9" fill="var(--terra)"/><text x="${px+23}" y="${py-83}" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">+${b}</text>`}
+    else{o+=isoPot(x,y,z,p.k,b);if(warn[u[1]])o+=`<text x="${px}" y="${py-82}" font-size="10" font-weight="700" fill="var(--terra-d)" text-anchor="middle">${warn[u[1]]}</text>`}});
+  return `<svg viewBox="0 0 400 398" role="img" aria-label="Isometric balcony with sun path">${o}</svg>`;
+}
+"""
+
+PAGES["02-jeu-iso"] = ("Game · isometric", r"""
+const place={0:'T3',1:'T2',2:'F2',3:'T4'};
+const got=Object.entries(place).reduce((a,[i,id])=>a+bloom(PLANTS[i],slot(id)),0),pre=bloom(PLANTS[4],slot('T1'));
+frame('Game · isometric',`<div class="g">${head()}
+  <div class="scene">${isoScene(place,[4,'T1'],{3:'Too sunny'})}</div>
+  <div class="side">
+    <div><h2>Give each plant the sun it needs.</h2><p class="sub">Six plants, eight spots. Each spot shows its hours of sun and water.</p></div>
+    <div class="tray">${PLANTS.map((p,i)=>{const cls=place[i]?'placed':i===4?'held':'';
+      return `<div class="card ${cls}">${i===4?'<span class="tag">Placing</span>':''}${icon(p)}<div><div class="n">${p.name}</div>${need(p)}</div></div>`}).join('')}</div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+      <div class="score"><span class="big">${got}</span><span class="of">/ 18 blooms</span><span class="plus">+${pre} if placed here</span></div>
+      ${meter(got,pre)}
+      <button class="cta" disabled>Place 2 more plants</button>
+      <div class="proof"><b>2,318</b> balconies planted today · median <b>13</b> blooms</div>
+    </div>
+  </div></div>`);
+""")
+
 for name, (label, body) in PAGES.items():
     html = f"""<!doctype html>
 <html lang="en">
@@ -238,7 +307,7 @@ for name, (label, body) in PAGES.items():
 <style>{CSS}</style>
 </head>
 <body>
-<script>{JS_CORE}
+<script>{JS_CORE}{ISO_JS if "iso" in name else ""}
 {body}</script>
 </body>
 </html>
