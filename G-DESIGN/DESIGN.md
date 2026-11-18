@@ -85,3 +85,14 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 **Note** : la machine de rendu n'a pas Inter ; les planches retombent sur Nimbus Sans (pas de graisse 500, d'où des titres un peu plus légers qu'avec Inter).
 
 **En attente** : revue de Gaia, puis `/lock`.
+
+## V6 — 2026-11-18 · Identité renforcée : fond de verdure luxuriante
+
+**Demande de Gaia** : refus du lock ; « améliore l'identité visuelle, qu'il y ait plus de nuances de vert luxuriant en background, pas juste du beige » (message coupé à la fin, suite à recevoir).
+
+**Fait**
+- `planches/v4/` : les 4 pages avec un fond de jungle douce derrière le balcon, 6 nuances de vert du plus clair au plus profond, ciel vert pâle. Le panneau d'action devient une carte blanche posée sur la verdure ; « Balcon » et les étiquettes ont un fond blanc translucide.
+- `STYLE.md` : nouvelle section « Fond de verdure », exception d'ombre pour le panneau.
+- `tools/gen-planches-v4.py` (V3 + couche de feuillage déterministe `leafBg()`) ; V1 à V3 non modifiées.
+
+**En attente** : la fin du message de Gaia, sa revue, puis `/lock`.
