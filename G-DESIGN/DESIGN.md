@@ -53,3 +53,17 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 - Générateur : `isoScene()` ajouté dans `tools/gen-planches-v2.py` ; les autres planches ne changent pas.
 
 **En attente** : choix A ou B par Gaia. Si B : déclinaison iso de Post et Carte de fin (Séries & classement n'a pas de scène), puis mise à jour de `STYLE.md`.
+
+## V4 — 2026-11-18 · Isométrique retenu, déclinaison
+
+**Décision de Gaia** : variante **B isométrique** retenue pour la scène.
+
+**Fait**
+- `planches/v2/01-post-iso.html` (balcon vide, 8 emplacements avec heures et eau) et `planches/v2/03-carte-de-fin-iso.html` (balcon final 16/18), générés depuis les mêmes pages que la version plate.
+- Emplacements vides de la rambarde affinés à la largeur de la main courante (ils la faisaient paraître rayée) ; s'applique aussi à `02-jeu-iso.html`.
+- `STYLE.md` : la scène, ses ombres, l'arc et le pot sont décrits en isométrique ; les planches plates restent comme historique.
+- `04-series-classement.html` inchangée (pas de scène).
+
+**Jeu de référence** : `01-post-iso`, `02-jeu-iso`, `03-carte-de-fin-iso`, `04-series-classement`.
+
+**En attente** : revue de Gaia, puis `/lock`.

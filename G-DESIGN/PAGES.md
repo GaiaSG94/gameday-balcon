@@ -1,12 +1,12 @@
 # PAGES — Balcon
 
-Pages déduites de `IDEE.md` (boucle quotidienne : un balcon par jour → carte de fin) et des critères Stage 2 (Delightful UX, Polish, Reddit-y, Daily Content). Planches en desktop 1440 × 900 uniquement (décision Gaia du 2026-11-18 : le règlement du hackathon n'exige pas le mobile). Style validé : Morning light, voir `STYLE.md`.
+Pages déduites de `IDEE.md` (boucle quotidienne : un balcon par jour → carte de fin) et des critères Stage 2 (Delightful UX, Polish, Reddit-y, Daily Content). Planches en desktop 1440 × 900 uniquement (décision Gaia du 2026-11-18 : le règlement du hackathon n'exige pas le mobile). Style validé : Morning light avec scène isométrique, voir `STYLE.md`.
 
 | # | Page | Rôle | Contenu clé | Statut |
 |---|------|------|-------------|--------|
-| 1 | Post | État dans le feed avant d'avoir joué : donner envie de cliquer | En-tête du post, titre du jour (« Daily Balcony #23 »), aperçu de la scène vide avec l'arc du soleil, bouton « Plant today's balcony », preuve sociale (joueurs du jour) | en revue — `planches/v2/01-post.html` |
-| 2 | Jeu | Écran principal. Une règle en 5 s : « Give each plant the sun it needs. » | Arc du soleil, 8 emplacements (heures de soleil + eau), 6 plantes à placer (besoin soleil + eau), compteur de floraisons, aperçu du gain au survol, bouton de validation, score médian du jour | style validé (V1-01) ; en revue — `planches/v2/02-jeu.html` |
-| 3 | Carte de fin | Résultat du jour + raison de revenir demain + accroche commentaire | Balcon final, floraisons /18, rang vs communauté, série, bouton « Share my balcony in comments », compte à rebours vers le prochain balcon | en revue — `planches/v2/03-carte-de-fin.html` |
+| 1 | Post | État dans le feed avant d'avoir joué : donner envie de cliquer | En-tête du post, titre du jour (« Daily Balcony #23 »), aperçu de la scène vide avec l'arc du soleil, bouton « Plant today's balcony », preuve sociale (joueurs du jour) | en revue — `planches/v2/01-post-iso.html` |
+| 2 | Jeu | Écran principal. Une règle en 5 s : « Give each plant the sun it needs. » | Arc du soleil, 8 emplacements (heures de soleil + eau), 6 plantes à placer (besoin soleil + eau), compteur de floraisons, aperçu du gain au survol, bouton de validation, score médian du jour | style validé (V1-01, scène isométrique V3) ; en revue — `planches/v2/02-jeu-iso.html` |
+| 3 | Carte de fin | Résultat du jour + raison de revenir demain + accroche commentaire | Balcon final, floraisons /18, rang vs communauté, série, bouton « Share my balcony in comments », compte à rebours vers le prochain balcon | en revue — `planches/v2/03-carte-de-fin-iso.html` |
 | 4 | Séries & classement | Streaks et scores communautaires | Ma série, distribution des scores du jour, meilleurs balcons du jour | en revue — `planches/v2/04-series-classement.html` |
 
 ## Questions produit ouvertes (non tranchées dans `IDEE.md`)
