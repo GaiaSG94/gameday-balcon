@@ -67,3 +67,21 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 **Jeu de référence** : `01-post-iso`, `02-jeu-iso`, `03-carte-de-fin-iso`, `04-series-classement`.
 
 **En attente** : revue de Gaia, puis `/lock`.
+
+## V5 — 2026-11-18 · Passe moderne inspirée de BridgeLab
+
+**Demande de Gaia** : au moment du `/lock`, « non, rends ça plus moderne ; inspire-toi du design de BridgeLab ». Le lock est annulé.
+
+**Fait**
+- Référence ouverte et décodée → `REFS.md` (bridgelab.io).
+- `planches/v3/` : les 4 pages (Post, Jeu, Carte de fin, Séries & classement) en scène isométrique, restylées :
+  - accent d'interface unique **Pine** `#17594c` (boutons, sélection, gain, série, « You ») ; la terre cuite ne sert plus qu'aux pots ;
+  - typo grotesque (Inter à embarquer) en graisse 500, interlettrage serré ; libellés en capitales espacées au-dessus des titres ;
+  - cartes blanches à filet 1 px, zéro ombre d'interface, boutons à angles de 8 px, plus aucune pilule ;
+  - scène : rambarde en métal sombre fin, arc du soleil en trait fin gris, étiquettes d'emplacement blanches à filet.
+- `STYLE.md` réécrit (palette, typo, composants, états) ; `PAGES.md` pointe vers `planches/v3/`.
+- `tools/gen-planches-v3.py` (copie du générateur V2 + passe moderne) ; V1 et V2 non modifiées.
+
+**Note** : la machine de rendu n'a pas Inter ; les planches retombent sur Nimbus Sans (pas de graisse 500, d'où des titres un peu plus légers qu'avec Inter).
+
+**En attente** : revue de Gaia, puis `/lock`.
