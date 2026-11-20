@@ -102,3 +102,34 @@ Journal des versions de design. Les versions ne sont jamais écrasées : chaque 
 `/lock` par Gaia. Style verrouillé sur la V6 : Morning light, scène isométrique, passe moderne (réf. BridgeLab), fond de verdure luxuriante. Les 4 pages sont validées. Référence pour le build : `STYLE.md` + `planches/v4/` (Post, Jeu, Carte de fin, Séries & classement).
 
 Restent ouvertes pour le build (questions produit de `PAGES.md`) : nombre d'emplacements, formule de score, eau fixe ou à répartir, déplacement avant validation, place des séries et du classement.
+
+## opencode — Revue d'implémentation (07b, 2026-11-20)
+
+Implémentation du style verrouillé V6 (scène isométrique V4) dans le produit.
+Captures côte à côte planche | produit (1440 × 900) : `G-DESIGN/revue/`
+(régénérables via `tools/make-review-captures.py`). Les captures produit
+utilisent le harnais temporaire de build (état de démo, même générateur
+déterministe que le serveur).
+
+### Écrans
+
+| Page | Planche | Produit | Écart restant | Raison |
+|---|---|---|---|---|
+| Jeu | `planches/v4/02-jeu.html` | `game.tsx` + `scene.tsx` | scène iso portée 1:1 (projection, mur/porte, rambarde + main courante, ombres portées, arc en perspective, pots volumiques, aperçu Pine « +N ») ; ±0 connu | soleil à `(jour % 12)/12` (feature produit : position déterministe par jour) au lieu du repère fixe de démo |
+| Post | `planches/v4/01-post.html` | `splash.tsx` | layout 1.55 fr/1 fr + tray « Today's plants » + CTA faits ; preuve sociale ≠ (texte « One round a day… » sans chiffres) et pas de pill streak | contrainte perf inline Devvit : pas d'appel API dans le splash (stats/streak inconnus sans fetch) |
+| Carte de fin | `planches/v4/03-carte-de-fin.html` | `EndCard` de `game.tsx` | score/mètre/rang/streak/commentaire/share/countdown (HH:MM:SS) faits ; **grille semaine 7 jours absente** ; libellé « See today's balconies » ≠ « …best balconies » | le serveur ne stocke pas l'historique jour par jour (seule la streak courante existe) ; pas de classement nominatif → libellé exact |
+| Séries & classement | `planches/v4/04-series-classement.html` | `StatsView` de `ui.tsx` | distribution + ma barre Pine faites ; **« meilleurs balcons » et « ma série » absents** | pas de leaderboard nominatif (choix produit, accepté en vérification 04) ; pas d'historique streak/jour |
+
+### Écarts volontaires soumis à Gaia (décision attendue)
+
+1. **Splash sans chiffres de preuve sociale ni streak** (perf inline Devvit).
+2. **Grille semaine 7 jours de la carte de fin** : nécessiterait d'historiser
+   chaque journée jouée en Redis (choix serveur, pas un écart de style).
+3. **Classement nominatif / « mes séries » de la page 4** : non produit par
+   choix anti-classement (voir VERIFICATION §3).
+4. Position du soleil animée par le n° du jour (produit) vs repère fixe
+   (planche) — assumé, sert la lecture « heure du jour ».
+
+Aucun écart de tokens/typo/palette/composants : palette, Inter, jauge 18
+segments, cartes plantes, boutons Pine, ombre unique du panneau sont ceux de
+`STYLE.md`.
