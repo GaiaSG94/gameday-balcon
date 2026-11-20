@@ -156,7 +156,8 @@ const Game = (): JSX.Element => {
     ? bloomsFor(heldPlant, hoverSlot)
     : 0;
   const nextMidnight = (Math.ceil(now / 86400000) * 86400000) - now;
-  const countdown = `${String(Math.floor(nextMidnight / 3600000)).padStart(2, '0')}h ${String(Math.floor((nextMidnight % 3600000) / 60000)).padStart(2, '0')}m`;
+  const pad = (value: number): string => String(value).padStart(2, '0');
+  const countdown = `${pad(Math.floor(nextMidnight / 3600000))}:${pad(Math.floor((nextMidnight % 3600000) / 60000))}:${pad(Math.floor((nextMidnight % 60000) / 1000))}`;
 
   return (
     <div className="page">
